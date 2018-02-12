@@ -70,8 +70,14 @@ require = (function (modules, cache, entry) {
   // Override the current require with this new one
   return newRequire;
 })({6:[function(require,module,exports) {
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
 
-},{}],8:[function(require,module,exports) {
+searchForm.addEventListener('submit', e => {
+    console.log(123);
+    e.preventDefault();
+});
+},{}],10:[function(require,module,exports) {
 
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -192,5 +198,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id);
   });
 }
-},{}]},{},[8,6])
+},{}]},{},[10,6])
 //# sourceMappingURL=/dist/findit.map
