@@ -74,10 +74,41 @@ const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 
 searchForm.addEventListener('submit', e => {
-    console.log(123);
+    // GET SEARCH TERM
+    const searchTerm = searchInput.value;
+    // GET SORTBY
+    const sortBy = document.querySelector('input[name="sortby"]:checked').value;
+    // GET LIMIT
+    const limit = document.getElementById('limit').value;
+    console.log(limit); 
+
+    if(searchTerm == '') {
+        // SHOW MESSAGE
+        showMessage('Please add a search term', 'alert-danger');
+    }
     e.preventDefault();
 });
-},{}],10:[function(require,module,exports) {
+
+// SHOW MESSAGE
+    function showMessage(message, className){
+        // CREATE DIV
+        const div = document.createElement('div');
+        // ADD CLASS
+        div.className = `alert ${className}`;
+        // ADD TEXT
+        div.appendChild(document.createTextNode(message));
+        // GET THE PARENT CONTAINER
+        const searchContainer = document.getElementById('search-container');
+        // GET SEARCH
+        const search = document.getElementById('search');
+
+        // INSERT MESSAGE
+        searchContainer.insertBefore(div,search);
+
+        // TIMEOUT ALERT
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
+    }
+},{}],11:[function(require,module,exports) {
 
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -198,5 +229,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id);
   });
 }
-},{}]},{},[10,6])
+},{}]},{},[11,6])
 //# sourceMappingURL=/dist/findit.map
