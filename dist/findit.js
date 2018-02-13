@@ -76,8 +76,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    search: function (searchTerm, sortBY, limit) {
-        fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${limit}`).then(res => res.json()).then(data => console.log(data));
+    search: function (searchTerm, sortBy, limit) {
+        return fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${limit}`).then(res => res.json()).then(data => data.data.children.map(data => data.data)).catch(err => console.log(err));
     }
 };
 },{}],6:[function(require,module,exports) {
@@ -109,7 +109,30 @@ searchForm.addEventListener('submit', e => {
     searchInput.value = '';
 
     // SEARCH REDDIT
-    _redditapi2.default.search(searchTerm, sortBy, limit);
+    _redditapi2.default.search(searchTerm, sortBy, limit).then(results => {
+        let output = 'div class="card-columns">';
+        console.log(results);
+        // LOOP THRU POSTS
+        results.forEach(post => {
+            output += `
+                <div class="card mb-2">
+                <img class="card-img-top" src="" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">${post.title}</h5>
+                  <p class="card-text">${truncateString(post.selftext, 100)}</p>
+                  <a href="" target="_blank
+                  " class="btn btn-primary">Read More</a>
+                  <hr>
+                  <span class="badge badge-secondary">Subreddit:</span> 
+                  <span class="badge badge-dark">Score: </span>
+                </div>
+              </div>
+                `;
+        });
+        output += '</div>';
+
+        document.getElementById('results').innerHTML = output;
+    });
 
     e.preventDefault();
 });
@@ -133,7 +156,14 @@ function showMessage(message, className) {
     // TIMEOUT ALERT
     setTimeout(() => document.querySelector('.alert').remove(), 3000);
 }
-},{"./redditapi":12}],13:[function(require,module,exports) {
+
+// Truncate String Function
+function truncateString(myString, limit) {
+    const shortened = myString.indexOf(' ', limit);
+    if (shortened == -1) return myString;
+    return myString.substring(0, shortened);
+}
+},{"./redditapi":12}],15:[function(require,module,exports) {
 
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -254,5 +284,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id);
   });
 }
-},{}]},{},[13,6])
+},{}]},{},[15,6])
 //# sourceMappingURL=/dist/findit.map

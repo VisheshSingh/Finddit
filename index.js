@@ -20,7 +20,31 @@ searchForm.addEventListener('submit', e => {
     searchInput.value = '';
 
     // SEARCH REDDIT
-    reddit.search(searchTerm, sortBy, limit);
+    reddit.search(searchTerm, sortBy, limit)
+        .then(results => {
+            let output = 'div class="card-columns">';
+            console.log(results);
+            // LOOP THRU POSTS
+            results.forEach(post => {
+                output += `
+                <div class="card mb-2">
+                <img class="card-img-top" src="" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">${post.title}</h5>
+                  <p class="card-text">${truncateString(post.selftext, 100)}</p>
+                  <a href="" target="_blank
+                  " class="btn btn-primary">Read More</a>
+                  <hr>
+                  <span class="badge badge-secondary">Subreddit:</span> 
+                  <span class="badge badge-dark">Score: </span>
+                </div>
+              </div>
+                `;
+            });
+            output += '</div>';
+
+            document.getElementById('results').innerHTML = output;
+        });
 
     e.preventDefault();
 });
@@ -43,4 +67,11 @@ searchForm.addEventListener('submit', e => {
 
         // TIMEOUT ALERT
         setTimeout(() => document.querySelector('.alert').remove(), 3000);
+    }
+
+    // Truncate String Function
+    function truncateString(myString, limit) {
+        const shortened = myString.indexOf(' ', limit);
+        if (shortened == -1) return myString;
+        return myString.substring(0, shortened);
     }

@@ -1,7 +1,8 @@
 export default{
-    search: function(searchTerm, sortBY, limit) {
-        fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${limit}`)
+    search: function(searchTerm, sortBy, limit) {
+        return fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${limit}`)
         .then(res => res.json())
-        .then(data => console.log(data));
+        .then(data => data.data.children.map(data => data.data))
+        .catch(err => console.log(err));
     }
 }
