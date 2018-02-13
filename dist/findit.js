@@ -110,21 +110,23 @@ searchForm.addEventListener('submit', e => {
 
     // SEARCH REDDIT
     _redditapi2.default.search(searchTerm, sortBy, limit).then(results => {
-        let output = 'div class="card-columns">';
+        let output = '<div class="card-columns">';
         console.log(results);
         // LOOP THRU POSTS
         results.forEach(post => {
+            // Check for image
+            let image = post.preview ? post.preview.images[0].source.url : 'https://cdn.comparitech.com/wp-content/uploads/2017/08/reddit-1.jpg';
             output += `
                 <div class="card mb-2">
-                <img class="card-img-top" src="" alt="Card image cap">
+                <img class="card-img-top" src="${image}" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">${post.title}</h5>
                   <p class="card-text">${truncateString(post.selftext, 100)}</p>
-                  <a href="" target="_blank
+                  <a href="${post.url}" target="_blank
                   " class="btn btn-primary">Read More</a>
                   <hr>
-                  <span class="badge badge-secondary">Subreddit:</span> 
-                  <span class="badge badge-dark">Score: </span>
+                  <span class="badge badge-secondary">Subreddit: ${post.subreddit}</span> 
+                  <span class="badge badge-dark">Score: ${post.score}</span>
                 </div>
               </div>
                 `;
@@ -163,7 +165,7 @@ function truncateString(myString, limit) {
     if (shortened == -1) return myString;
     return myString.substring(0, shortened);
 }
-},{"./redditapi":12}],15:[function(require,module,exports) {
+},{"./redditapi":12}],17:[function(require,module,exports) {
 
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -284,5 +286,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id);
   });
 }
-},{}]},{},[15,6])
+},{}]},{},[17,6])
 //# sourceMappingURL=/dist/findit.map
