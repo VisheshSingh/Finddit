@@ -69,7 +69,26 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({6:[function(require,module,exports) {
+})({12:[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    search: function (searchTerm, sortBY, limit) {
+        fetch(`http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${limit}`).then(res => res.json()).then(data => console.log(data));
+    }
+};
+},{}],6:[function(require,module,exports) {
+'use strict';
+
+var _redditapi = require('./redditapi');
+
+var _redditapi2 = _interopRequireDefault(_redditapi);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 
@@ -80,35 +99,41 @@ searchForm.addEventListener('submit', e => {
     const sortBy = document.querySelector('input[name="sortby"]:checked').value;
     // GET LIMIT
     const limit = document.getElementById('limit').value;
-    console.log(limit); 
 
-    if(searchTerm == '') {
+    if (searchTerm == '') {
         // SHOW MESSAGE
         showMessage('Please add a search term', 'alert-danger');
     }
+
+    // CLEAR INPUT
+    searchInput.value = '';
+
+    // SEARCH REDDIT
+    _redditapi2.default.search(searchTerm, sortBy, limit);
+
     e.preventDefault();
 });
 
 // SHOW MESSAGE
-    function showMessage(message, className){
-        // CREATE DIV
-        const div = document.createElement('div');
-        // ADD CLASS
-        div.className = `alert ${className}`;
-        // ADD TEXT
-        div.appendChild(document.createTextNode(message));
-        // GET THE PARENT CONTAINER
-        const searchContainer = document.getElementById('search-container');
-        // GET SEARCH
-        const search = document.getElementById('search');
+function showMessage(message, className) {
+    // CREATE DIV
+    const div = document.createElement('div');
+    // ADD CLASS
+    div.className = `alert ${className}`;
+    // ADD TEXT
+    div.appendChild(document.createTextNode(message));
+    // GET THE PARENT CONTAINER
+    const searchContainer = document.getElementById('search-container');
+    // GET SEARCH
+    const search = document.getElementById('search');
 
-        // INSERT MESSAGE
-        searchContainer.insertBefore(div,search);
+    // INSERT MESSAGE
+    searchContainer.insertBefore(div, search);
 
-        // TIMEOUT ALERT
-        setTimeout(() => document.querySelector('.alert').remove(), 3000);
-    }
-},{}],11:[function(require,module,exports) {
+    // TIMEOUT ALERT
+    setTimeout(() => document.querySelector('.alert').remove(), 3000);
+}
+},{"./redditapi":12}],13:[function(require,module,exports) {
 
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
@@ -229,5 +254,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id);
   });
 }
-},{}]},{},[11,6])
+},{}]},{},[13,6])
 //# sourceMappingURL=/dist/findit.map
